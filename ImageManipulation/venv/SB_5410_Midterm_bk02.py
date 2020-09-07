@@ -38,8 +38,7 @@ class Application(Frame):
         # self.person_ent = Entry(self)
         # self.person_ent.grid(row=1, column=1, sticky=W)
 
-        #self.grid_columnconfigure(2, weight=1)
-        # self.grid_columnconfigure(4, weight=1)
+        self.grid_columnconfigure(1, weight=1)
 
         # create a label and text entry for a plural noun
         Label(self,
@@ -47,14 +46,14 @@ class Application(Frame):
               ).grid(row=2, column=0, sticky=W)
         Label(self,
               text="Height:"
-              ).grid(row=2, column=0, sticky=E)
+              ).grid(row=2, column=1, sticky=E)
         self.height_ent = Entry(self, width=10)
-        self.height_ent.grid(row=2, column=1, sticky=W)
+        self.height_ent.grid(row=2, column=2, sticky=W)
         Label(self,
               text="Width:"
-              ).grid(row=2, column=1, sticky=E)
+              ).grid(row=2, column=3, sticky=E)
         self.width_ent = Entry(self, width=10)
-        self.width_ent.grid(row=2, column=2, sticky=W)
+        self.width_ent.grid(row=2, column=4, sticky=W)
 
         # create a label and text entry for a verb
         Label(self,
@@ -62,9 +61,9 @@ class Application(Frame):
               ).grid(row=3, column=0, sticky=W)
         Label(self,
               text="Angle:"
-              ).grid(row=3, column=0, sticky=E)
+              ).grid(row=3, column=1, sticky=E)
         self.angle_ent = Entry(self, width=10)
-        self.angle_ent.grid(row=3, column=1, sticky=W)
+        self.angle_ent.grid(row=3, column=2, sticky=W)
 
         # flip image horizontal or vertical
         Label(self,
@@ -76,40 +75,50 @@ class Application(Frame):
         Checkbutton(self,
                     text="Vertical",
                     variable=self.is_vertical
-                    ).grid(row=4, column=0, sticky=E)
+                    ).grid(row=4, column=1, sticky=W)
 
         # create horizontal check button
         self.is_horizontal = BooleanVar()
         Checkbutton(self,
                     text="Horizontal",
                     variable=self.is_horizontal
-                    ).grid(row=4, column=1, sticky=W)
+                    ).grid(row=4, column=2, sticky=W)
 
         # create a label and text entry for a Tolerance
         Label(self,
               text="Tolerance:"
               ).grid(row=5, column=0, sticky=W)
-        self.tolerance_ent = Entry(self, width=8)
-        self.tolerance_ent.grid(row=5, column=0, sticky=E)
+        self.tolerance_ent = Entry(self)
+        self.tolerance_ent.grid(row=5, column=1, sticky=W)
 
-        # create a label and text entry for a Brightness
-        Label(self,
-              text="Brightness:"
-              ).grid(row=6, column=0, sticky=W)
-        self.brightness_ent = Entry(self, width=8)
-        self.brightness_ent.grid(row=6, column=0, sticky=E)
+        # # create a label for body parts radio buttons
+        # Label(self,
+        #       text="Tolerance:"
+        #       ).grid(row=5, column=0, sticky=W)
+        #
+        # # create variable for single, body part
+        # self.body_part = StringVar()
+        # self.body_part.set(None)
+        #
+        # # create body part radio buttons
+        # body_parts = ["bellybutton", "big toe", "medulla oblongata"]
+        # column = 1
+        # for part in body_parts:
+        #     Radiobutton(self,
+        #                 text=part,
+        #                 variable=self.body_part,
+        #                 value=part
+        #                 ).grid(row=5, column=column, sticky=W)
+        #     column += 1
+        #
+        # # create a submit button
+        # Button(self,
+        #        text="Click for story",
+        #        command=self.tell_story
+        #        ).grid(row=6, column=0, sticky=W)
 
-        # create a label and text entry for a Sharpness
-        Label(self,
-              text="Sharpness:"
-              ).grid(row=7, column=0, sticky=W)
-        self.sharpness_ent = Entry(self, width=8)
-        self.sharpness_ent.grid(row=7, column=0, sticky=E)
-
-        # create a filler
-        Label(self,
-              text=" "
-              ).grid(row=8, column=0, sticky=W)
+        self.story_txt = Text(self, width=75, height=10, wrap=WORD)
+        self.story_txt.grid(row=7, column=0, columnspan=4)
 
     def tell_story(self):
         """ Fill text box with new story based on user input. """
