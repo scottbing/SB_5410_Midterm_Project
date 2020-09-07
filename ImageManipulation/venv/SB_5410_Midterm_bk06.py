@@ -3,10 +3,7 @@
 # Image Analysis
 
 from tkinter import *
-from tkinter import filedialog
-from tkinter.filedialog import askopenfilename
 from PIL import Image, ImageDraw, ImageTk
-import tkinter.font as font
 
 
 class Application(Frame):
@@ -19,15 +16,21 @@ class Application(Frame):
         Frame.__init__(self, master)
         self.master = master
 
-        # reverse_btn = Button(self)
-
-        # create menu
         menu = Menu(self.master)
         self.master.config(menu=menu)
+        # fileMenu = Menu(menu)
+        # fileMenu.add_command(label="Item")
+        # fileMenu.add_command(label="Exit", command=self.exitProgram)
+        # menu.add_cascade(label="File", menu=fileMenu)
+        #
+        # editMenu = Menu(menu)
+        # editMenu.add_command(label="Undo")
+        # editMenu.add_command(label="Redo")
+        # menu.add_cascade(label="Edit", menu=editMenu)
 
         fileMenu = Menu(menu, tearoff=0)
         fileMenu.add_command(label="New", command=self.donothing)
-        fileMenu.add_command(label="Open", command=self.openFile)
+        fileMenu.add_command(label="Open", command=self.donothing)
         fileMenu.add_command(label="Save", command=self.donothing)
         fileMenu.add_command(label="Save as...", command=self.donothing)
         fileMenu.add_command(label="Close", command=self.donothing)
@@ -56,36 +59,22 @@ class Application(Frame):
         self.grid()
         self.create_widgets()
 
-    def openFile(self):
-        self.fileName = askopenfilename(parent=self, initialdir="C:/", title='Choose an image.')
-        print(self.fileName)
-
     def exitProgram(self):
         exit()
 
     def donothing(self):
         pass
 
-    def generate(self):
-        pass
-
-    def reverse(self):
-
-        if self.reverse_btn.config('relief')[-1] == 'sunken':
-            self.reverse_btn.config(relief="raised")
-        else:
-            self.reverse_btn.config(relief="sunken")
-
     def create_widgets(self):
         """ Create widgets to get story information and to display story. """
 
-        # Show a default image
+        # Show an image
         self.image = Image.open('bakery.jpeg')
         self.photo = ImageTk.PhotoImage(self.image)
         self.imglbl = Label(self, image=self.photo)
         self.imglbl.grid(row=0, column=0, columnspan=4, sticky="nsew")
 
-        print("Current Image Size: ", self.image.size)
+        print("Image Size: ", self.image.size)
 
         # this lines UNPACKS values
         # of variable a
@@ -93,12 +82,12 @@ class Application(Frame):
 
         # create a label and text entry for the name of a person
         Label(self,
-              text="Current Image Size: " + str(h) + "x" + str(w)
+              text="Image Size: " + str(h) + "x" + str(w)
               ).grid(row=1, column=0, sticky=W)
         # self.person_ent = Entry(self)
         # self.person_ent.grid(row=1, column=1, sticky=W)
 
-        # self.grid_columnconfigure(2, weight=1)
+        #self.grid_columnconfigure(2, weight=1)
         # self.grid_columnconfigure(4, weight=1)
 
         # create a label and text entry for a plural noun
@@ -166,30 +155,52 @@ class Application(Frame):
         self.sharpness_ent = Entry(self, width=8)
         self.sharpness_ent.grid(row=7, column=0, sticky=E)
 
-        self.reverse_btn = Button(self,
-                                  text="Reverse",
-                                  relief="sunken",
-                                  command=self.reverse
-                                  ).grid(row=8, column=0, sticky=W)
-
         # create a filler
         Label(self,
               text=" "
-              ).grid(row=9, column=0, sticky=W)
+              ).grid(row=8, column=0, sticky=W)
 
-        btnFont = font.Font(weight="bold")
-        btnFont = font.Font(size=20)
+    def tell_story(self):
+        """ Fill text box with new story based on user input. """
+        # get values from the GUI
+        person = self.person_ent.get()
+        noun = self.noun_ent.get()
+        verb = self.verb_ent.get()
+        adjectives = ""
+        if self.is_itchy.get():
+            adjectives += "itchy, "
+        if self.is_joyous.get():
+            adjectives += "joyous, "
+        if self.is_electric.get():
+            adjectives += "electric, "
+        body_part = self.body_part.get()
 
+        # create the story
+        story = "The famous explorer "
+        story += person
+        story += " had nearly given up a life-long quest to find The Lost City of "
+        story += noun.title()
+        story += " when one day, the "
+        story += noun
+        story += " found "
+        story += person + ". "
+        story += "A strong, "
+        story += adjectives
+        story += "peculiar feeling overwhelmed the explorer. "
+        story += "After all this time, the quest was finally over. A tear came to "
+        story += person + "'s "
+        story += body_part + ". "
+        story += "And then, the "
+        story += noun
+        story += " promptly devoured "
+        story += person + ". "
+        story += "The moral of the story? Be careful what you "
+        story += verb
+        story += " for."
 
-        # create a the generate button
-        self.generate_btn = Button(self,
-                                   text="Generate",
-                                   command=self.generate,
-                                   # bg='blue',
-                                   # fg='#ffffff',
-                                   highlightbackground='#3E4149',
-                                   font = btnFont
-                                   ).grid(row=9, column=1, sticky=NSEW)
+        # display the story
+        self.story_txt.delete(0.0, END)
+        self.story_txt.insert(0.0, story)
 
 
 # main
