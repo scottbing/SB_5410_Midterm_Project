@@ -90,26 +90,12 @@ class Application(Frame):
         else:
             self.reverse_btn.config(relief="sunken")
 
-    # function to be called when mouse is clicked
-    def getcoords(self, event):
-        # outputting x and y coords to console
-        print(event.x, event.y)
-        return (event.x, event.y)
-
-
-
-    def putImage(self, File):
-
+    def putImage(self, fileName):
         # Show the user selected image
         self.image = Image.open(self.fileName)
         self.photo = ImageTk.PhotoImage(self.image)
-
-        # must use Canvas to track mouse clicks
-        self.canvas.create_image(0, 0, image=self.photo, anchor="nw")
-        self.canvas.config(scrollregion=self.canvas.bbox(ALL))
-
-        # handle mouse clicks
-        self.canvas.bind("<Button 1>", self.getcoords)
+        self.imglbl = Label(self, image=self.photo)
+        self.imglbl.grid(row=0, column=0, columnspan=4, sticky="nsew")
 
         print("Current Image Size: ", self.image.size)
 
@@ -122,35 +108,38 @@ class Application(Frame):
               text="Current Image Size: " + str(h) + "x" + str(w)
               ).grid(row=1, column=0, sticky=W)
 
-
     def create_widgets(self):
         """ Create widgets to get story information and to display story. """
 
-        self.frame = Frame(root, bd=2, relief=SUNKEN)
-        self.frame.grid_rowconfigure(0, weight=1)
-        self.frame.grid_columnconfigure(0, weight=1)
-        self.xscroll = Scrollbar(self.frame, orient=HORIZONTAL)
-        self.xscroll.grid(row=1, column=0, sticky=E + W)
-        self.yscroll = Scrollbar(self.frame)
-        self.yscroll.grid(row=0, column=1, sticky=N + S)
-        self.canvas = Canvas(self.frame, bd=0, xscrollcommand=self.xscroll.set, yscrollcommand=self.yscroll.set)
-        self.canvas.grid(row=0, column=0, sticky=N + S + E + W)
-        self.xscroll.config(command=self.canvas.xview)
-        self.yscroll.config(command=self.canvas.yview)
-        self.frame.grid(row=0, column=0, sticky=W)
+        # # Show a default image
+        # self.image = Image.open('bakery.jpeg')
+        # self.photo = ImageTk.PhotoImage(self.image)
+        # self.imglbl = Label(self, image=self.photo)
+        # self.imglbl.grid(row=0, column=0, columnspan=4, sticky="nsew")
+        #
+        # print("Current Image Size: ", self.image.size)
+        #
+        # # this lines UNPACKS values
+        # # of variable a
+        # (h, w) = self.image.size
+        #
+        # # create a label and text entry for the name of a person
+        # Label(self,
+        #       text="Current Image Size: " + str(h) + "x" + str(w)
+        #       ).grid(row=1, column=0, sticky=W)
 
         # # create resize check button
         self.is_resize = BooleanVar()
-        Checkbutton(self.frame,
+        Checkbutton(self,
                     text="Resize",
                     variable=self.is_resize
                     ).grid(row=2, column=0, sticky=W)
-        Label(self.frame,
+        Label(self,
               text="Height:"
               ).grid(row=2, column=0, sticky=E)
         self.height_ent = Entry(self, width=10)
         self.height_ent.grid(row=2, column=1, sticky=W)
-        Label(self.frame,
+        Label(self,
               text="Width:"
               ).grid(row=2, column=1, sticky=E)
         self.width_ent = Entry(self, width=10)
@@ -158,54 +147,54 @@ class Application(Frame):
 
         # Rotate Check button
         self.is_rotate = BooleanVar()
-        Checkbutton(self.frame,
+        Checkbutton(self,
                     text="Rotate Image",
                     variable=self.is_rotate
                     ).grid(row=3, column=0, sticky=W)
-        Label(self.frame,
+        Label(self,
               text="Angle:"
               ).grid(row=3, column=0, sticky=E)
-        self.angle_ent = Entry(self.frame, width=10)
+        self.angle_ent = Entry(self, width=10)
         self.angle_ent.grid(row=3, column=1, sticky=W)
 
         # Flip image button
         self.is_flip = BooleanVar()
-        Checkbutton(self.frame,
+        Checkbutton(self,
                     text="Flip Image",
                     variable=self.is_flip
                     ).grid(row=4, column=0, sticky=W)
 
         # create vertical check button
         self.is_vertical = BooleanVar()
-        Checkbutton(self.frame,
+        Checkbutton(self,
                     text="Vertical",
                     variable=self.is_vertical
                     ).grid(row=4, column=0, sticky=E)
 
         # create horizontal check button
         self.is_horizontal = BooleanVar()
-        Checkbutton(self.frame,
+        Checkbutton(self,
                     text="Horizontal",
                     variable=self.is_horizontal
                     ).grid(row=4, column=1, sticky=W)
 
         # Reverse image button
         self.is_reverse = BooleanVar()
-        Checkbutton(self.frame,
+        Checkbutton(self,
                     text="Reverse Image",
                     variable=self.is_reverse
                     ).grid(row=5, column=0, sticky=W)
 
         # create color check button
         self.is_color = BooleanVar()
-        Checkbutton(self.frame,
+        Checkbutton(self,
                     text="Color",
                     variable=self.is_color
                     ).grid(row=5, column=0, sticky=E)
 
         # create grayscale check button
         self.is_gray = BooleanVar()
-        Checkbutton(self.frame,
+        Checkbutton(self,
                     text="GrayScale",
                     variable=self.is_gray
                     ).grid(row=5, column=1, sticky=W)
@@ -213,35 +202,35 @@ class Application(Frame):
         # create a CheckBox and text entry for a Tolerance
         # Tolerance setting button
         self.is_tolerant = BooleanVar()
-        Checkbutton(self.frame,
+        Checkbutton(self,
                     text="Tolerance",
                     variable=self.is_tolerant
                     ).grid(row=6, column=0, sticky=W)
-        self.tolerance_ent = Entry(self.frame, width=8)
+        self.tolerance_ent = Entry(self, width=8)
         self.tolerance_ent.grid(row=6, column=0, sticky=E)
 
         # create a CheckBox and text entry for a Brightness
         # Brightness setting button
         self.is_bright = BooleanVar()
-        Checkbutton(self.frame,
+        Checkbutton(self,
                     text="Brightness",
                     variable=self.is_bright
                     ).grid(row=7, column=0, sticky=W)
-        self.tolerance_ent = Entry(self.frame, width=8)
+        self.tolerance_ent = Entry(self, width=8)
         self.tolerance_ent.grid(row=7, column=0, sticky=E)
 
         # create a CheckBox and text entry for a Sharpness
         # Sharpness setting button
         self.is_sharp = BooleanVar()
-        Checkbutton(self.frame,
+        Checkbutton(self,
                     text="Brightness",
                     variable=self.is_sharp
                     ).grid(row=8, column=0, sticky=W)
-        self.tolerance_ent = Entry(self.frame, width=8)
+        self.tolerance_ent = Entry(self, width=8)
         self.tolerance_ent.grid(row=8, column=0, sticky=E)
 
         # create a filler
-        Label(self.frame,
+        Label(self,
               text=" "
               ).grid(row=9, column=0, sticky=W)
 
@@ -250,7 +239,7 @@ class Application(Frame):
 
 
         # create a the generate button
-        self.generate_btn = Button(self.frame,
+        self.generate_btn = Button(self,
                                    text="Generate",
                                    command=self.processSelections,
                                    # bg='blue',

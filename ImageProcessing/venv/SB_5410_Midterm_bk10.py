@@ -91,25 +91,23 @@ class Application(Frame):
             self.reverse_btn.config(relief="sunken")
 
     # function to be called when mouse is clicked
-    def getcoords(self, event):
+    def getcoords(event):
         # outputting x and y coords to console
         print(event.x, event.y)
         return (event.x, event.y)
-
-
+        # mouseclick event
+        self.canvas.bind("<Button 1>", printcoords)
 
     def putImage(self, File):
+        # # Show the user selected image
+        # self.image = Image.open(self.fileName)
+        # self.photo = ImageTk.PhotoImage(self.image)
+        # self.imglbl = Label(self, image=self.photo)
+        # self.imglbl.grid(row=0, column=0, columnspan=4, sticky="nsew")
 
-        # Show the user selected image
-        self.image = Image.open(self.fileName)
-        self.photo = ImageTk.PhotoImage(self.image)
-
-        # must use Canvas to track mouse clicks
-        self.canvas.create_image(0, 0, image=self.photo, anchor="nw")
+        img = ImageTk.PhotoImage(Image.open(File))
+        self.canvas.create_image(0, 0, image=img, anchor="nw")
         self.canvas.config(scrollregion=self.canvas.bbox(ALL))
-
-        # handle mouse clicks
-        self.canvas.bind("<Button 1>", self.getcoords)
 
         print("Current Image Size: ", self.image.size)
 
@@ -121,7 +119,6 @@ class Application(Frame):
         Label(self,
               text="Current Image Size: " + str(h) + "x" + str(w)
               ).grid(row=1, column=0, sticky=W)
-
 
     def create_widgets(self):
         """ Create widgets to get story information and to display story. """
